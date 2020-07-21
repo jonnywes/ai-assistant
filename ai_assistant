@@ -1,0 +1,59 @@
+import os
+import time
+import playsound
+import speech_recognition as sr
+from gtts import gTTS
+import random
+
+def speak(text, lang='en'):
+    tts = gTTS(text=text, lang = lang)
+    filename = "voice.mp3"
+    tts.save(filename)
+    playsound.playsound(filename)
+
+def finished():
+    os.remove("voice.mp3")
+    
+
+
+quit_list = ["goodbye", "quit", "bye"]
+joke_list = [' Why did the kid throw his clock out the window? It is because he wanted to see time fly!',
+             'Why are fish so smart? Because they live in schools!',
+             ' Where do polar bears keep their money? In a snow bank!',
+             ' Why did the pony get sent to his room? He wouldn’t stop horsing around!',
+             'What did the fisherman say to the magician? Pick a cod, any cod!'
+             ]
+
+speak("Hello, what is your name?")
+finished()
+
+name = input("Please tell me your name ")
+ai_name = "Personal Voice Assistant"
+
+speak("Hello {} it is so nice to meet you".format(name))
+finished()
+
+while True:
+
+    response = input()
+    if response.lower() in quit_list:
+        speak(f"Goodbye {name}")
+        break
+    elif response.lower() == 'what is your name?':
+        speak(f"My name is {ai_name}. Would you like to give me a new name, {name}?")
+        y_n = input()
+        if y_n.lower() == 'yes':
+            finished()
+            speak("what do you want to name me?")
+            finished()
+            ai_name = input()
+            speak(f"my name is now{ai_name}")
+        else:
+            finished()
+            speak("I will keep my name then")
+    elif response.lower() == 'tell me a joke':
+        speak(random.choice(joke_list))
+    else:
+        speak(f"You said {response}")
+
+    finished()
